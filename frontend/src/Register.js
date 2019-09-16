@@ -13,15 +13,15 @@ class Register extends Component {
       first_name:'',
       last_name:'',
       email:'',
+      user_Name:'',
       password:''
     }
   }
-  
   componentWillReceiveProps(nextProps){
     console.log("nextProps",nextProps);
   }
   handleClick(event,role){
-    var apiBaseUrl = "http://localhost:8080/addUser";
+    var apiBaseUrl = "http://localhost:8080";
     // console.log("values in register handler",role);
     var self = this;
     //To be done:check for empty values before hitting submit
@@ -29,11 +29,11 @@ class Register extends Component {
       var payload={
       "first_name": this.state.first_name,
       "last_name":this.state.last_name,
-      "userid":this.state.email,
-      "password":this.state.password,
-      "role":role
+      "user_Name":this.state.user_Name,
+      "email":this.state.email,
+      "password":this.state.password
       }
-      axios.post(apiBaseUrl, payload)
+      axios.post(apiBaseUrl+'/RegisterUser', payload)
      .then(function (response) {
        console.log(response);
        if(response.data.code === 200){
@@ -63,19 +63,17 @@ class Register extends Component {
   render() {
     // console.log("props",this.props);
     var userhintText,userLabel;
-    if(this.props.role === "student"){
-      userhintText="Enter your Student Id";
-      userLabel="Student Id";
-    }
-    else{
-      userhintText="Enter your Teacher Id";
-      userLabel="Teacher Id";
-    }
+   
+      userhintText="Enter your User Name";
+      userLabel="User name";
+  
     return (
       <div>
         <MuiThemeProvider>
           <div>
-         
+          <AppBar
+             title="Register"
+           />
            <TextField
              hintText="Enter your First Name"
              floatingLabelText="First Name"
@@ -88,12 +86,21 @@ class Register extends Component {
              onChange = {(event,newValue) => this.setState({last_name:newValue})}
              />
            <br/>
+      
            <TextField
              hintText={userhintText}
              floatingLabelText={userLabel}
-             onChange = {(event,newValue) => this.setState({email:newValue})}
+             onChange = {(event,newValue) => this.setState({user_Name:newValue})}
              />
            <br/>
+
+           <TextField
+             hintText="Enter your Email id"
+             floatingLabelText="Email id"
+             onChange = {(event,newValue) => this.setState({email:newValue})}
+             />
+               <br/>
+
            <TextField
              type = "password"
              hintText="Enter your Password"
